@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="weatherData"
+            type="com.adroitandroid.weatherapp.model.WeatherData" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/current_weather_cv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="com.adroitandroid.weather.MainActivity">
+
+                <TextView
+                    android:id="@+id/place_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text='@{weatherData.name ?? ""}'
+                    android:textSize="24sp"
+                    tools:text="Bangalore" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/horizontal_line" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/weather_icon_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="Shows the icon for current weather"
+                        android:maxHeight="200dp"
+                        android:maxWidth="200dp"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
+                        tools:src="@android:drawable/btn_radio" />
+
+                    <TextView
+                        android:id="@+id/weather_main_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_toEndOf="@id/weather_icon_iv"
+                        android:text='@{weatherData.weatherSummary.main ?? ""}'
+                        android:textSize="20sp"
+                        tools:text="Rains" />
+
+                    <TextView
+                        android:id="@+id/weather_desc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/weather_main_tv"
+                        android:layout_margin="4dp"
+                        android:layout_toEndOf="@id/weather_icon_iv"
+                        android:text='@{weatherData.weatherSummary.description ?? ""}'
+                        android:textSize="14sp"
+                        tools:text="Intermittent rains" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:divider="@drawable/vertical_line"
+                    android:orientation="horizontal"
+                    android:showDividers="middle">
+
+                    <TextView
+                        android:id="@+id/temp_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:paddingEnd="16dp"
+                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.temp))}'
+                        android:textSize="14sp"
+                        android:visibility="@{weatherData.main.tempPresent ? View.VISIBLE : View.GONE}"
+                        tools:text="300 *F" />
+
+                    <TextView
+                        android:id="@+id/pressure_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:paddingEnd="16dp"
+                        android:paddingStart="16dp"
+                        android:text='@{@string/pressureText(String.valueOf(weatherData.main.pressure))}'
+                        android:textSize="14sp"
+                        android:visibility="@{weatherData.main.pressurePresent ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/humidity_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:paddingStart="16dp"
+                        android:text='@{@string/humidityText(String.valueOf(weatherData.main.humidity))}'
+                        android:textSize="14sp"
+                        android:visibility="@{weatherData.main.humidityPresent ? View.VISIBLE : View.GONE}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Min Temp:"
+                        android:textSize="14sp"
+                        android:visibility="@{weatherData.main.minTempPresent ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/min_temp_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMin))}'
+                        android:textSize="14sp"
+                        android:visibility="@{weatherData.main.minTempPresent ? View.VISIBLE : View.GONE}" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:background="@drawable/vertical_line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Max Temp:"
+                        android:textSize="14sp"
+                        android:visibility="@{weatherData.main.maxTempPresent ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/max_temp_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMax))}'
+                        android:textSize="14sp"
+                        android:visibility="@{weatherData.main.maxTempPresent ? View.VISIBLE : View.GONE}" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/progress_bar_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <TextView
+                android:id="@+id/progress_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textSize="14sp"
+                tools:text="Fetching current weather at requested location..." />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/change_location_ll"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Check current weather anywhere"
+                        android:textSize="14sp" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/zipcode_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter zipcode"
+                            android:inputType="number"
+                            android:textSize="14sp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Spinner
+                        android:id="@+id/countries_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/check_btn"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Check"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

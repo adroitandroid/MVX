@@ -19,17 +19,18 @@ public abstract class XPresenter<vView extends XView, vPresenterModel extends XP
     private vView mView;
     private vPresenterModel mPresenterModelService;
 
-    public static <V extends XView,
-            PM extends XPresenterModel<V>,
-            P extends XPresenter<V, PM>>
-    void bind(final V view, Class<PM> presentModelServiceClass, final OnBindListener<P> bindListener) {
+//    TODO: checkout builder pattern or any other better way
+    public static <View extends XView,
+            PresenterModel extends XPresenterModel<View>,
+            Presenter extends XPresenter<View, PresenterModel>>
+    void bind(final View view, Class<PresenterModel> presenterModelServiceClass, final OnBindListener<Presenter> bindListener) {
         Context context = view.getContext();
-        Intent intent = new Intent(context.getApplicationContext(), presentModelServiceClass);
+        Intent intent = new Intent(context.getApplicationContext(), presenterModelServiceClass);
         ServiceConnection serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 Log.d("MVX", "Presenter service connected");
-                P presenterBinder = (P) service;
+                Presenter presenterBinder = (Presenter) service;
                 presenterBinder.setServiceConnection(this);
                 presenterBinder.setView(view);
                 presenterBinder.restoreState();
