@@ -1,6 +1,8 @@
-package com.adroitandroid.weatherapp;
+package com.adroitandroid.weatherapp.model;
 
 import com.adroitandroid.mvx.XPresenterModel;
+import com.adroitandroid.weatherapp.presenter.MainPresenter;
+import com.adroitandroid.weatherapp.view.MainView;
 
 /**
  * Created by pv on 25/06/17.

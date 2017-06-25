@@ -1,6 +1,9 @@
-package com.adroitandroid.weatherapp;
+package com.adroitandroid.weatherapp.presenter;
 
 import android.content.Context;
+
+import com.adroitandroid.weatherapp.model.MainPresenterModel;
+import com.adroitandroid.weatherapp.view.MainView;
 
 import org.junit.Test;
 

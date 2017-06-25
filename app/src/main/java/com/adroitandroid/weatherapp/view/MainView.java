@@ -1,4 +1,4 @@
-package com.adroitandroid.weatherapp;
+package com.adroitandroid.weatherapp.view;
 
 import com.adroitandroid.mvx.XView;
 
@@ -6,7 +6,7 @@ import com.adroitandroid.mvx.XView;
  * Created by pv on 25/06/17.
  */
 
-interface MainView extends XView {
+public interface MainView extends XView {
     void setError(String error);
 
     void setText(String input);

@@ -1,4 +1,4 @@
-package com.adroitandroid.weatherapp;
+package com.adroitandroid.weatherapp.view;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.adroitandroid.mvx.XPresenter;
+import com.adroitandroid.weatherapp.R;
 import com.adroitandroid.weatherapp.databinding.ActivityMainBinding;
+import com.adroitandroid.weatherapp.model.MainPresenterModel;
+import com.adroitandroid.weatherapp.presenter.MainPresenter;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
