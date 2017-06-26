@@ -103,7 +103,7 @@
                         android:gravity="start"
                         android:maxLines="1"
                         android:paddingEnd="16dp"
-                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.temp))}'
+                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempInK))}'
                         android:textSize="14sp"
                         android:visibility="@{weatherData.main.tempPresent ? View.VISIBLE : View.GONE}"
                         tools:text="300 *F" />
@@ -155,7 +155,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMin))}'
+                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMinInK))}'
                         android:textSize="14sp"
                         android:visibility="@{weatherData.main.minTempPresent ? View.VISIBLE : View.GONE}" />
 
@@ -180,7 +180,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMax))}'
+                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMaxInK))}'
                         android:textSize="14sp"
                         android:visibility="@{weatherData.main.maxTempPresent ? View.VISIBLE : View.GONE}" />
                 </LinearLayout>

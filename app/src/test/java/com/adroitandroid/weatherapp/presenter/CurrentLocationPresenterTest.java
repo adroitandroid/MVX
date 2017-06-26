@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.adroitandroid.mvx.lce.XLceView;
+import com.adroitandroid.weatherapp.model.CurrentLocationPresenterModel;
 import com.adroitandroid.weatherapp.model.IpLocationData;
 import com.adroitandroid.weatherapp.network.IpApiClient;
-import com.adroitandroid.weatherapp.network.RetrofitClient;
 
 import junit.framework.Assert;
 
@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
@@ -38,8 +39,6 @@ public class CurrentLocationPresenterTest {
 
     @Mock
     private IpApiClient ipApiClient;
-    @Mock
-    private RetrofitClient retrofitClient;
 
     @BeforeClass
     public static void setUpRxSchedulers() {
@@ -113,10 +112,39 @@ public class CurrentLocationPresenterTest {
         Assert.assertEquals(CurrentLocationPresenter.ERROR_MSG_LOCATION_NOT_FOUND, presenter.errorInView);
     }
 
+    @Test
+    public void testLocationFetched() {
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        IpLocationData ipLocationData = new IpLocationData() {
+            @Override
+            public String getCountryCode() {
+                return "US";
+            }
+        };
+        Mockito.when(ipApiClient.getIpLocationData()).thenReturn(Observable.just(ipLocationData));
+
+        CurrentLocationPresenterForTest presenter = new CurrentLocationPresenterForTest(ipApiClient) {
+            @Override
+            protected void onFetchComplete(IpLocationData data) {
+                super.onFetchComplete(data);
+                countDownLatch.countDown();
+            }
+        };
+        presenter.startFetch();
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            Assert.fail();
+        }
+        Assert.assertEquals(presenter.getCountriesList().indexOf(new Locale("", "US").getDisplayCountry()),
+                presenter.getCurrentCountryIndex());
+    }
+
     private class CurrentLocationPresenterForTest extends CurrentLocationPresenter {
 
         private final IpApiClient mApiClient;
         private String errorInView;
+        private CurrentLocationPresenterModel currentLocationPresenterModel = new CurrentLocationPresenterModel();
 
         public CurrentLocationPresenterForTest(IpApiClient ipApiClient) {
             mApiClient = ipApiClient;
@@ -125,6 +153,11 @@ public class CurrentLocationPresenterTest {
         @Override
         protected IpApiClient getIpApiClient() {
             return mApiClient;
+        }
+
+        @Override
+        protected CurrentLocationPresenterModel getPresenterModel() {
+            return currentLocationPresenterModel;
         }
 
         @Override

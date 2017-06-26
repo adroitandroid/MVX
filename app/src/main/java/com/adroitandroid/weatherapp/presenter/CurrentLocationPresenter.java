@@ -31,7 +31,7 @@ public class CurrentLocationPresenter
         String countryCode = data.getCountryCode();
         Locale locale = new Locale("", countryCode);
         String displayCountry = locale.getDisplayCountry();
-        getPresenterModel().setCurrentCountryIndex(getPresenterModel().getCountriesList().indexOf(displayCountry));
+        getPresenterModel().setCurrentCountryIndex(getCountriesList().indexOf(displayCountry));
     }
 
     @Override

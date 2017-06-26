@@ -19,6 +19,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, XLceView<WeatherData>, CurrentWeatherPresenterModel> {
     private static final String MESSAGE_FETCH_IN_PROGRESS = "Fetching weather at the requested location... Please wait.";
+    public static final String ERROR_INVALID_ZIPCODE = "Please enter a valid zip code";
+    public static final String ERROR_INVALID_COUNTRY = "Please select a valid country";
+    public static final String ERROR_IN_FETCH = "Unable to fetch weather for location ";
 
     @Override
     protected void onFetchComplete(WeatherData data) {
@@ -57,7 +60,7 @@ public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, XLceView
 
                             @Override
                             public void onError(Throwable e) {
-                                setError("Unable to fetch weather for location " + getPresenterModel().getZipCodeAndCountryCode());
+                                setError(ERROR_IN_FETCH + getPresenterModel().getZipCodeAndCountryCode());
                             }
 
                             @Override
@@ -68,9 +71,9 @@ public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, XLceView
             }
         } else {
             if (!validZipCode) {
-                setError("Please enter a valid zip code");
+                setError(ERROR_INVALID_ZIPCODE);
             } else {
-                setError("Please select a valid country");
+                setError(ERROR_INVALID_COUNTRY);
             }
         }
     }

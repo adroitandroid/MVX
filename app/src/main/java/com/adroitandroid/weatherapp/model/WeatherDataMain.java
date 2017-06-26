@@ -45,8 +45,8 @@ public class WeatherDataMain {
         return humidity != null;
     }
 
-    public double getTemp() {
-        return temp;
+    public double getTempInK() {
+        return (temp * 9 / 5) - 459.67;
     }
 
     public void setTemp(Double temp) {
@@ -69,16 +69,16 @@ public class WeatherDataMain {
         this.humidity = humidity;
     }
 
-    public double getTempMin() {
-        return tempMin;
+    public double getTempMinInK() {
+        return (tempMin * 9 / 5) - 459.67;
     }
 
     public void setTempMin(Double tempMin) {
         this.tempMin = tempMin;
     }
 
-    public double getTempMax() {
-        return tempMax;
+    public double getTempMaxInK() {
+        return (tempMax * 9 / 5) - 459.67;
     }
 
     public void setTempMax(Double tempMax) {
