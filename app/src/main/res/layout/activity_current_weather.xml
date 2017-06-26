@@ -103,7 +103,7 @@
                         android:gravity="start"
                         android:maxLines="1"
                         android:paddingEnd="16dp"
-                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempInK))}'
+                        android:text='@{@string/temperatureText(String.format("%.2f", weatherData.main.tempInK))}'
                         android:textSize="14sp"
                         android:visibility="@{weatherData.main.tempPresent ? View.VISIBLE : View.GONE}"
                         tools:text="300 *F" />
@@ -127,7 +127,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="start"
-                        android:maxLines="1"
                         android:paddingStart="16dp"
                         android:text='@{@string/humidityText(String.valueOf(weatherData.main.humidity))}'
                         android:textSize="14sp"
@@ -155,7 +154,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMinInK))}'
+                        android:text='@{@string/temperatureText(String.format("%.2f", weatherData.main.tempMinInK))}'
                         android:textSize="14sp"
                         android:visibility="@{weatherData.main.minTempPresent ? View.VISIBLE : View.GONE}" />
 
@@ -180,7 +179,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:text='@{@string/temperatureText(String.valueOf(weatherData.main.tempMaxInK))}'
+                        android:text='@{@string/temperatureText(String.format("%.2f", weatherData.main.tempMaxInK))}'
                         android:textSize="14sp"
                         android:visibility="@{weatherData.main.maxTempPresent ? View.VISIBLE : View.GONE}" />
                 </LinearLayout>
