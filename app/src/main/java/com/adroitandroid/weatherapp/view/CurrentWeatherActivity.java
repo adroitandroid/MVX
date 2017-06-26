@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.adroitandroid.mvx.XPresenter;
+import com.adroitandroid.mvx.lce.XLceView;
 import com.adroitandroid.weatherapp.R;
 import com.adroitandroid.weatherapp.databinding.ActivityCurrentWeatherBinding;
 import com.adroitandroid.weatherapp.model.CurrentLocationPresenterModel;
@@ -29,8 +30,8 @@ public class CurrentWeatherActivity extends AppCompatActivity {
     private ActivityCurrentWeatherBinding mDataBinding;
     private CurrentWeatherPresenter mWeatherPresenter;
     private CurrentLocationPresenter mLocationPresenter;
-    private CurrentWeatherView mCurrentWeatherView;
-    private CurrentLocationView mCurrentLocationView;
+    private XLceView<WeatherData> mCurrentWeatherView;
+    private XLceView<IpLocationData> mCurrentLocationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class CurrentWeatherActivity extends AppCompatActivity {
     }
 
     private void initLocationView() {
-        mCurrentLocationView = new CurrentLocationView() {
+        mCurrentLocationView = new XLceView<IpLocationData>() {
 
             Snackbar snackbar;
 
@@ -135,7 +136,7 @@ public class CurrentWeatherActivity extends AppCompatActivity {
     }
 
     private void initWeatherView() {
-        mCurrentWeatherView = new CurrentWeatherView() {
+        mCurrentWeatherView = new XLceView<WeatherData>() {
             @Override
             public void onContentReady(WeatherData content) {
                 mDataBinding.setWeatherData(content);
@@ -182,12 +183,14 @@ public class CurrentWeatherActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        TODO: move presenters to disposable state
+        mWeatherPresenter.restoreState();
+        mLocationPresenter.restoreState();
     }
 
     @Override
     public void finish() {
         super.finish();
-//        TODO: move presenters to disposable state
+        mWeatherPresenter.disposeState();
+        mLocationPresenter.disposeState();
     }
 }

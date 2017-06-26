@@ -1,10 +1,10 @@
 package com.adroitandroid.weatherapp.presenter;
 
 import com.adroitandroid.mvx.lce.XLcePresenter;
+import com.adroitandroid.mvx.lce.XLceView;
 import com.adroitandroid.weatherapp.model.CurrentWeatherPresenterModel;
 import com.adroitandroid.weatherapp.model.WeatherData;
 import com.adroitandroid.weatherapp.network.RetrofitClient;
-import com.adroitandroid.weatherapp.view.CurrentWeatherView;
 
 import java.util.Locale;
 
@@ -16,7 +16,7 @@ import retrofit2.Response;
  * Created by pv on 25/06/17.
  */
 
-public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, CurrentWeatherView, CurrentWeatherPresenterModel> {
+public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, XLceView<WeatherData>, CurrentWeatherPresenterModel> {
     private static final String MESSAGE_FETCH_IN_PROGRESS = "Fetching weather at the requested location... Please wait.";
 
     @Override

@@ -11,6 +11,10 @@ import com.adroitandroid.weatherapp.view.MainView;
 public class MainPresenterModel extends XPresenterModel<MainView> {
     private String mName;
 
+    public MainPresenterModel() {
+        super("MainPresenterModel");
+    }
+
     @Override
     public MainPresenter getPresenter() {
         return new MainPresenter();

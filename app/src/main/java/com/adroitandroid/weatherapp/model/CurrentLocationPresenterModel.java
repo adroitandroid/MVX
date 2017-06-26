@@ -1,8 +1,8 @@
 package com.adroitandroid.weatherapp.model;
 
 import com.adroitandroid.mvx.lce.XLcePresenterModel;
+import com.adroitandroid.mvx.lce.XLceView;
 import com.adroitandroid.weatherapp.presenter.CurrentLocationPresenter;
-import com.adroitandroid.weatherapp.view.CurrentLocationView;
 
 import java.util.List;
 
@@ -10,12 +10,16 @@ import java.util.List;
  * Created by pv on 26/06/17.
  */
 
-public class CurrentLocationPresenterModel extends XLcePresenterModel<IpLocationData, CurrentLocationView> {
+public class CurrentLocationPresenterModel extends XLcePresenterModel<IpLocationData, XLceView<IpLocationData>> {
     public static final int STATUS_FETCH_COMPLETE = 2;
     private List<String> countriesList;
     private int currentCountryIndex;
     private int status = 0;
     private int selectedCountryIndex;
+
+    public CurrentLocationPresenterModel() {
+        super("CurrentLocationPresenterModel");
+    }
 
     @Override
     public CurrentLocationPresenter getPresenter() {

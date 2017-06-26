@@ -76,7 +76,16 @@ public abstract class XPresenter<vView extends XView, vPresenterModel extends XP
         applicationContext.startService(intent);
     }
 
-    void restoreState() {
+    public void restoreState() {
+        makePresenterModelServiceDisposable();
+    }
+
+    public void disposeState() {
+        makePresenterModelServiceDisposable();
+        mPresenterModelService.stopSelf();
+    }
+
+    private void makePresenterModelServiceDisposable() {
         new HandlerThread("StateRestorer") {
             @Override
             protected void onLooperPrepared() {

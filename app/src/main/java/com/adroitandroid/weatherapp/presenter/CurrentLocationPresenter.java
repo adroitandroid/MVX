@@ -1,10 +1,10 @@
 package com.adroitandroid.weatherapp.presenter;
 
 import com.adroitandroid.mvx.lce.XLcePresenter;
+import com.adroitandroid.mvx.lce.XLceView;
 import com.adroitandroid.weatherapp.model.CurrentLocationPresenterModel;
 import com.adroitandroid.weatherapp.model.IpLocationData;
 import com.adroitandroid.weatherapp.network.RetrofitClient;
-import com.adroitandroid.weatherapp.view.CurrentLocationView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import retrofit2.Response;
  * Created by pv on 26/06/17.
  */
 
-public class CurrentLocationPresenter extends XLcePresenter<IpLocationData, CurrentLocationView, CurrentLocationPresenterModel> {
+public class CurrentLocationPresenter extends XLcePresenter<IpLocationData, XLceView<IpLocationData>, CurrentLocationPresenterModel> {
     @Override
     protected void onFetchComplete(IpLocationData data) {
         String countryCode = data.getCountryCode();

@@ -1,8 +1,8 @@
 package com.adroitandroid.weatherapp.model;
 
 import com.adroitandroid.mvx.lce.XLcePresenterModel;
+import com.adroitandroid.mvx.lce.XLceView;
 import com.adroitandroid.weatherapp.presenter.CurrentWeatherPresenter;
-import com.adroitandroid.weatherapp.view.CurrentWeatherView;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by pv on 25/06/17.
  */
 
-public class CurrentWeatherPresenterModel extends XLcePresenterModel<WeatherData, CurrentWeatherView> {
+public class CurrentWeatherPresenterModel extends XLcePresenterModel<WeatherData, XLceView<WeatherData>> {
     public static final int STATE_FETCH_IN_PROGRESS = 1;
     public static final int STATE_FETCH_COMPLETE = 2;
     public static final int STATE_FETCH_FAILED = 3;
@@ -25,6 +25,10 @@ public class CurrentWeatherPresenterModel extends XLcePresenterModel<WeatherData
     private String mCountryCode;
     private int mState;
     private HashMap<String, WeatherData> mWeatherDataCache = new HashMap<>();
+
+    public CurrentWeatherPresenterModel() {
+        super("CurrentWeatherPresenterModel");
+    }
 
     @Override
     public CurrentWeatherPresenter getPresenter() {

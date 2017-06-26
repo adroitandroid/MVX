@@ -14,8 +14,8 @@ public abstract class XPresenterModel<xView extends XView> extends IntentService
 
     private boolean mIsDisposable;
 
-    public XPresenterModel() {
-        super("Presenter[" + System.currentTimeMillis() + "]");
+    public XPresenterModel(String presenterModelName) {
+        super(presenterModelName);
     }
 
     @Override

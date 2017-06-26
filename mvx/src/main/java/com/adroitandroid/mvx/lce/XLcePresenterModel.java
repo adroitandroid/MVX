@@ -7,4 +7,7 @@ import com.adroitandroid.mvx.XPresenterModel;
  */
 
 public abstract class XLcePresenterModel<T, vView extends XLceView<T>> extends XPresenterModel<vView> {
+    public XLcePresenterModel(String presenterModelName) {
+        super(presenterModelName);
+    }
 }
