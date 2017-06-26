@@ -8,9 +8,10 @@ import com.adroitandroid.weatherapp.network.RetrofitClient;
 
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by pv on 25/06/17.
@@ -40,17 +41,30 @@ public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, XLceView
             } else {
                 getPresenterModel().setStatus(CurrentWeatherPresenterModel.STATE_FETCH_IN_PROGRESS);
                 RetrofitClient.getWeatherApiClient().getWeatherData(
-                        getPresenterModel().getZipCodeAndCountryCode()).enqueue(new Callback<WeatherData>() {
-                    @Override
-                    public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
-                        complete(response.body());
-                    }
+                        getPresenterModel().getZipCodeAndCountryCode())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<WeatherData>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
-                    @Override
-                    public void onFailure(Call<WeatherData> call, Throwable t) {
-                        setError("Unable to fetch weather for location " + getPresenterModel().getZipCodeAndCountryCode());
-                    }
-                });
+                            }
+
+                            @Override
+                            public void onNext(WeatherData weatherData) {
+                                complete(weatherData);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                setError("Unable to fetch weather for location " + getPresenterModel().getZipCodeAndCountryCode());
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
             }
         } else {
             if (!validZipCode) {

@@ -2,7 +2,7 @@ package com.adroitandroid.weatherapp.network;
 
 import com.adroitandroid.weatherapp.model.IpLocationData;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 /**
@@ -12,5 +12,5 @@ import retrofit2.http.GET;
 public interface IpApiClient {
 
     @GET("json")
-    Call<IpLocationData> getIpLocationData();
+    Observable<IpLocationData> getIpLocationData();
 }

@@ -4,6 +4,7 @@ import com.adroitandroid.mvx.lce.XLcePresenter;
 import com.adroitandroid.mvx.lce.XLceView;
 import com.adroitandroid.weatherapp.model.CurrentLocationPresenterModel;
 import com.adroitandroid.weatherapp.model.IpLocationData;
+import com.adroitandroid.weatherapp.network.IpApiClient;
 import com.adroitandroid.weatherapp.network.RetrofitClient;
 
 import java.util.ArrayList;
@@ -11,15 +12,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by pv on 26/06/17.
  */
 
-public class CurrentLocationPresenter extends XLcePresenter<IpLocationData, XLceView<IpLocationData>, CurrentLocationPresenterModel> {
+public class CurrentLocationPresenter
+        extends XLcePresenter<IpLocationData, XLceView<IpLocationData>, CurrentLocationPresenterModel> {
+
+    public static final String ERROR_MSG_LOCATION_NOT_FOUND = "Couldn't find your current location";
+
     @Override
     protected void onFetchComplete(IpLocationData data) {
         String countryCode = data.getCountryCode();
@@ -35,18 +41,35 @@ public class CurrentLocationPresenter extends XLcePresenter<IpLocationData, XLce
 
     @Override
     protected void onStartFetch() {
-        RetrofitClient.getIpApiClient().getIpLocationData().enqueue(new Callback<IpLocationData>() {
+        getIpApiClient().getIpLocationData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Observer<IpLocationData>() {
             @Override
-            public void onResponse(Call<IpLocationData> call, Response<IpLocationData> response) {
-                complete(response.body());
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(IpLocationData ipLocationData) {
+                complete(ipLocationData);
                 getPresenterModel().setStatus(CurrentLocationPresenterModel.STATUS_FETCH_COMPLETE);
             }
 
             @Override
-            public void onFailure(Call<IpLocationData> call, Throwable t) {
-                setError("Couldn't find your current location");
+            public void onError(Throwable e) {
+                setError(ERROR_MSG_LOCATION_NOT_FOUND);
+            }
+
+            @Override
+            public void onComplete() {
+
             }
         });
+    }
+
+    protected IpApiClient getIpApiClient() {
+        return RetrofitClient.getIpApiClient();
     }
 
     public List<String> getCountriesList() {

@@ -2,6 +2,7 @@ package com.adroitandroid.weatherapp.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,6 +30,7 @@ public class RetrofitClient {
             weather = new Retrofit.Builder()
                     .baseUrl(WEATHER_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return weather;
@@ -46,6 +48,7 @@ public class RetrofitClient {
             ip = new Retrofit.Builder()
                     .baseUrl(IP_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return ip;

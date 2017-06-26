@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -95,11 +96,19 @@ public class CurrentWeatherActivity extends AppCompatActivity {
         mDataBinding.checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
+
                 mWeatherPresenter.setFetchParams(mDataBinding.zipcodeEt.getText().toString(),
                         mDataBinding.countriesSpinner.getSelectedItem().toString());
                 mWeatherPresenter.startFetch();
             }
+
         });
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mDataBinding.getRoot().getWindowToken(), 0);
     }
 
     private void initLocationView() {
@@ -140,6 +149,7 @@ public class CurrentWeatherActivity extends AppCompatActivity {
             @Override
             public void onContentReady(WeatherData content) {
                 mDataBinding.setWeatherData(content);
+                mDataBinding.executePendingBindings();
 
                 mDataBinding.changeLocationLl.setVisibility(View.VISIBLE);
                 mDataBinding.currentWeatherCv.setVisibility(View.VISIBLE);
@@ -149,6 +159,11 @@ public class CurrentWeatherActivity extends AppCompatActivity {
             @Override
             public void onError(String error) {
                 Snackbar.make(mDataBinding.getRoot(), error, Snackbar.LENGTH_LONG).show();
+                mDataBinding.changeLocationLl.setVisibility(View.VISIBLE);
+                if (mDataBinding.getWeatherData() != null) {
+                    mDataBinding.currentWeatherCv.setVisibility(View.VISIBLE);
+                }
+                mDataBinding.progressBarLl.setVisibility(View.GONE);
             }
 
             @Override
@@ -183,8 +198,12 @@ public class CurrentWeatherActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mWeatherPresenter.restoreState();
-        mLocationPresenter.restoreState();
+        if (mWeatherPresenter != null) {
+            mWeatherPresenter.restoreState();
+        }
+        if (mLocationPresenter != null) {
+            mLocationPresenter.restoreState();
+        }
     }
 
     @Override
