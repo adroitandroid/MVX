@@ -91,6 +91,7 @@ public abstract class XPresenter<vView extends XView, vPresenterModel extends XP
             protected void onLooperPrepared() {
                 Log.d("MVX", "Making presenter disposable again");
                 mPresenterModelService.setDisposable();
+                quitSafely();
             }
         }.start();
     }
