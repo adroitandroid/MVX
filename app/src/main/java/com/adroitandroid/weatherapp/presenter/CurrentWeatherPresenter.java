@@ -5,6 +5,7 @@ import com.adroitandroid.mvx.lce.XLceView;
 import com.adroitandroid.weatherapp.model.CurrentWeatherPresenterModel;
 import com.adroitandroid.weatherapp.model.WeatherData;
 import com.adroitandroid.weatherapp.network.RetrofitClient;
+import com.adroitandroid.weatherapp.network.WeatherApiClient;
 
 import java.util.Locale;
 
@@ -43,7 +44,7 @@ public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, XLceView
                 complete(weatherDataFromCache);
             } else {
                 getPresenterModel().setStatus(CurrentWeatherPresenterModel.STATE_FETCH_IN_PROGRESS);
-                RetrofitClient.getWeatherApiClient().getWeatherData(
+                getWeatherApiClient().getWeatherData(
                         getPresenterModel().getZipCodeAndCountryCode())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -76,6 +77,10 @@ public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, XLceView
                 setError(ERROR_INVALID_COUNTRY);
             }
         }
+    }
+
+    protected WeatherApiClient getWeatherApiClient() {
+        return RetrofitClient.getWeatherApiClient();
     }
 
     private boolean isValidCountryCode() {
