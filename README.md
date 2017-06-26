@@ -28,7 +28,6 @@ We take advantage of this similarity which gives us a few advantages, listed in 
 ## TODO
 * remove logs
 * unit tests for sample presenters with retrofit using mockito and dagger
-* expose presenter API to restore state, i.e., to stop saving state
 
 ## Credits
 Again, I thank the creators of Mosby, particularly Hannes Dorfmann and his articles on the relevant topics. I realized the PresenterModel being a different layer in them and also the LCE pattern.
