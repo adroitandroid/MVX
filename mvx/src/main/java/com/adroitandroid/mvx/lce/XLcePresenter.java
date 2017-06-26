@@ -23,7 +23,6 @@ public abstract class XLcePresenter<T, vView extends XLceView<T>, vPresenterMode
     }
 
     public void startFetch() {
-        onStartFetch();
         Observable.just("")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
@@ -32,6 +31,7 @@ public abstract class XLcePresenter<T, vView extends XLceView<T>, vPresenterMode
                         getView().onFetchStart();
                     }
                 });
+        onStartFetch();
     }
 
     protected void setError(final String error) {
