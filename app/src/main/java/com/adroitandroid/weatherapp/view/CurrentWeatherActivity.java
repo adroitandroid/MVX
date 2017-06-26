@@ -182,12 +182,12 @@ public class CurrentWeatherActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        TODO: make weather presenter state disposable
+//        TODO: move presenters to disposable state
     }
 
     @Override
     public void finish() {
         super.finish();
-//        TODO: make weather presenter state disposable
+//        TODO: move presenters to disposable state
     }
 }

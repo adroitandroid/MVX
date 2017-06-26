@@ -21,8 +21,6 @@ public class CurrentWeatherPresenter extends XLcePresenter<WeatherData, CurrentW
 
     @Override
     protected void onFetchComplete(WeatherData data) {
-//        TODO: caching
-
         getPresenterModel().setStatus(CurrentWeatherPresenterModel.STATE_FETCH_COMPLETE);
         getPresenterModel().setLastFetchedData(data);
     }
