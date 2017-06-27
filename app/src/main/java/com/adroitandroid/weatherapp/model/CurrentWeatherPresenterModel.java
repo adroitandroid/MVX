@@ -41,7 +41,7 @@ public class CurrentWeatherPresenterModel extends XLcePresenterModel<WeatherData
         if (getPresenter().mustCache(mZipCode, mCountryCode)
                 && mWeatherDataCache.get(zipCodeAndCountryCode) == null) {
             mWeatherDataCache.put(zipCodeAndCountryCode, data);
-            Observable.timer(CACHE_EXPIRY_IN_MINUTES, TimeUnit.MINUTES)
+            Observable.timer(CACHE_EXPIRY_IN_MINUTES, TimeUnit.MINUTES, Schedulers.computation())
                     .observeOn(Schedulers.computation())
                     .subscribe(new Consumer<Long>() {
                         @Override

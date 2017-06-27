@@ -20,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -40,10 +40,45 @@ public class CurrentWeatherPresenterTest {
 
     @BeforeClass
     public static void setUpRxSchedulers() {
-        final Scheduler immediate = new Scheduler() {
+
+        RxJavaPlugins.setInitIoSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
             @Override
-            public Scheduler.Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(new Executor() {
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxJavaPlugins.setInitComputationSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxJavaPlugins.setInitNewThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxJavaPlugins.setInitSingleSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+    }
+
+    @NonNull
+    private static Scheduler getNewSchedulerForTest() {
+        return new Scheduler() {
+            @Override
+            public Worker createWorker() {
+                return new ExecutorScheduler.ExecutorWorker(new ScheduledThreadPoolExecutor(1) {
                     @Override
                     public void execute(@NonNull Runnable runnable) {
                         runnable.run();
@@ -51,37 +86,6 @@ public class CurrentWeatherPresenterTest {
                 });
             }
         };
-
-        RxJavaPlugins.setInitIoSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-            @Override
-            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
-                return immediate;
-            }
-        });
-        RxJavaPlugins.setInitComputationSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-            @Override
-            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
-                return immediate;
-            }
-        });
-        RxJavaPlugins.setInitNewThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-            @Override
-            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
-                return immediate;
-            }
-        });
-        RxJavaPlugins.setInitSingleSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-            @Override
-            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
-                return immediate;
-            }
-        });
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
-            @Override
-            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
-                return immediate;
-            }
-        });
     }
 
     @Before
@@ -271,7 +275,7 @@ public class CurrentWeatherPresenterTest {
         private final ViewForTest mView;
         private CurrentWeatherPresenterModel mPresenterModel = new CurrentWeatherPresenterModel();
 
-        public CurrentWeatherPresenterForTest(ViewForTest viewForTest) {
+        CurrentWeatherPresenterForTest(ViewForTest viewForTest) {
             mView = viewForTest;
         }
 
