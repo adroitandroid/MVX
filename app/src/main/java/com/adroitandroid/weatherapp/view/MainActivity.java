@@ -51,6 +51,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (mPresenter != null) {
+            mPresenter.restoreState();
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        mPresenter.disposeState();
+    }
+
+    @Override
     public Context getContext() {
         return this;
     }
