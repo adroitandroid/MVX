@@ -1,5 +1,4 @@
 # Getting Started
-Let's look at a sample usage to understand how to use MVX. We'll come to the example when required, this guide is otherwise generic.
 MVX has 2 variants - plain vanilla and LCE. LCE is the Load-Content-Error pattern where you show the loading state till data is fetched, if fetch is successful you show the content otherwise the error. The 3 components for the two variants are as listed below.
 
 | Variant | View interface | abstract Presenter Model | abstract Presenter |
@@ -8,6 +7,8 @@ MVX has 2 variants - plain vanilla and LCE. LCE is the Load-Content-Error patter
 | LCE     | XLceView       | XLcePresenterModel       | XLcePresenter      |
 
 We'll first look at the plain vanilla implementation and checkout LCE [at the end](/GettingStarted.md#lce-implementation).
+
+We'll look at the usage in [the sample app](/app) where required, the guide is generic otherwise.
 
 ## Step 1 - Adding MVX to your project
 Add jitpack.io to your root build.gradle
