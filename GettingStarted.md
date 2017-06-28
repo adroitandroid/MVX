@@ -143,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 ...
 }
 ```
+**IMPORTANT:** restoring of the view state from the Presenter should be done in ```onBind()``` seen in Step 3 as that is where the Presenter is sure to be present. It may be null by the time ```onRestoreInstanceState()``` is called.
+
 ## Step 5 - Into the Manifest
 As mentioned in Step 4, the PresenterModel is actually a Service implementation. So don't forget to add it to your ```AndroidManifest.xml```.
 ```xml
