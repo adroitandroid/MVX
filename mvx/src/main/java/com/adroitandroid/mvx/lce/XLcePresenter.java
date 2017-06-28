@@ -13,15 +13,6 @@ import io.reactivex.functions.Consumer;
 public abstract class XLcePresenter<T, vView extends XLceView<T>, vPresenterModel extends XLcePresenterModel<T, vView>>
         extends XPresenter<vView, vPresenterModel> {
 
-    private Long mId;
-
-    public long getId() {
-        if (mId == null) {
-            mId = System.currentTimeMillis();
-        }
-        return mId;
-    }
-
     public void startFetch() {
         Observable.just("")
                 .observeOn(AndroidSchedulers.mainThread())

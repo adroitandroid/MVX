@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 /**
  * Created by pv on 25/06/17.
@@ -21,7 +20,7 @@ public abstract class XPresenterModel<xView extends XView> extends IntentService
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("MVX", "New instance of service started");
+        Log.log("New instance of service started");
     }
 
     @Override
@@ -32,16 +31,16 @@ public abstract class XPresenterModel<xView extends XView> extends IntentService
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                Log.d("MVX", e.getLocalizedMessage());
+                Log.log(e.getLocalizedMessage());
             }
-            Log.d("MVX", "Presenter isn't disposable now");
+            Log.log("Presenter isn't disposable now");
         }
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("MVX", "presenter onBind called");
+        Log.log("presenter onBind called");
         return getPresenter().setPresenterModel(this);
     }
 
@@ -49,12 +48,12 @@ public abstract class XPresenterModel<xView extends XView> extends IntentService
 
     public void setDisposable() {
         mIsDisposable = true;
-        Log.d("MVX", "Presenter should be disposable again");
+        Log.log("Presenter should be disposable again");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("MVX", "Presenter destroyed!");
+        Log.log("Presenter destroyed!");
     }
 }

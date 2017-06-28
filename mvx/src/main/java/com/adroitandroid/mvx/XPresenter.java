@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.HandlerThread;
 import android.os.IBinder;
-import android.util.Log;
 
 /**
  * Created by pv on 25/06/17.
@@ -29,7 +28,7 @@ public abstract class XPresenter<vView extends XView, vPresenterModel extends XP
         ServiceConnection serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d("MVX", "Presenter service connected");
+                Log.log("Presenter service connected");
                 Presenter presenterBinder = (Presenter) service;
                 presenterBinder.setServiceConnection(this);
                 presenterBinder.setView(view);
@@ -89,7 +88,7 @@ public abstract class XPresenter<vView extends XView, vPresenterModel extends XP
         new HandlerThread("StateRestorer") {
             @Override
             protected void onLooperPrepared() {
-                Log.d("MVX", "Making presenter disposable again");
+                Log.log("Making presenter disposable again");
                 mPresenterModelService.setDisposable();
                 quitSafely();
             }
