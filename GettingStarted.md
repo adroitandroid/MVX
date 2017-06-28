@@ -6,7 +6,7 @@ MVX has 2 variants - plain vanilla and LCE. LCE is the Load-Content-Error patter
 | Vanilla | XView          | XPresenterModel          | XPresenter         |
 | LCE     | XLceView       | XLcePresenterModel       | XLcePresenter      |
 
-We'll first look at the plain vanilla implementation and checkout LCE [at the end](/GettingStarted.md#lce-implementation).
+We'll first look at the plain vanilla implementation and checkout LCE [at the end](/GettingStarted.md#lce-implementation). We'll then discuss how to achieve some quick [unit testing](/GettingStarted.md#unit-testing).
 
 We'll look at the usage in [the sample app](/app) where required, the guide is generic otherwise.
 
@@ -233,3 +233,78 @@ or to set error in fetch, call
 ```java
 this.setError("This is a sample error message");
 ```
+## Unit Testing
+As you can observe, the presenter is outside the bounds of Activities which hold the view or presenter models Services. The presenter is basically out of scope of Android lifecycles and so can be unit tested quickly \[insert you favorite celebration meme here\].
+
+There's one caveat though. When testing an LCE presenter implementation, one needs to keep in mind that the presenter calls the view callbacks on the main thread. There's a quick way to mock that though.
+### Step 1
+The library uses RxJava 2 internally for this, so the first step here is add to your app's ```build.gradle``` the following dependencies. Ignore the Rx test-dependencies if your app is already dependent on them.
+```Gradle
+dependencies {
+    ...
+    // Rx
+    testCompile 'io.reactivex.rxjava2:rxjava:2.0.5'
+    testCompile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    testCompile 'junit:junit:4.12'
+}
+```
+### Step 2
+Add the following to your test class.
+```java
+public class SampleTest {
+
+    @BeforeClass
+    public static void setUpRxSchedulers() {
+
+        RxJavaPlugins.setInitIoSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxJavaPlugins.setInitComputationSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxJavaPlugins.setInitNewThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxJavaPlugins.setInitSingleSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(new Function<Callable<Scheduler>, Scheduler>() {
+            @Override
+            public Scheduler apply(Callable<Scheduler> scheduler) throws Exception {
+                return getNewSchedulerForTest();
+            }
+        });
+    }
+
+    @NonNull
+    private static Scheduler getNewSchedulerForTest() {
+        return new Scheduler() {
+            @Override
+            public Worker createWorker() {
+                return new ExecutorScheduler.ExecutorWorker(new ScheduledThreadPoolExecutor(1) {
+                    @Override
+                    public void execute(@NonNull Runnable runnable) {
+                        runnable.run();
+                    }
+                });
+            }
+        };
+    }
+    ...
+}
+```
+And you should be good to go. Checkout how tests are implemented in the sample app [here](app/src/test/java/com/adroitandroid/weatherapp/presenter).
+
+Since the view and presenter model are passive components, you're business logic should be well tested by now!
