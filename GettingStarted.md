@@ -223,5 +223,13 @@ public class CurrentLocationPresenter
 ```
 The data fetch is invoked when the following method of the Presenter is called.
 ```java
-    presenter.startFetch();
+presenter.startFetch();
+```
+To complete the fetch with data, you should call the Presenter method
+```java
+this.complete(data);
+```
+or to set error in fetch, call
+```java
+this.setError("This is a sample error message");
 ```
