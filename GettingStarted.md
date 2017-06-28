@@ -109,18 +109,21 @@ public abstract class XPresenter<vView extends XView, vPresenterModel extends XP
 ```
 Examples using this can be found [here](/app).
 
+Finally, remember to unbind the bound Presenter.
+```java
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.unbind(this);
+    }
+```
+
 ## Step 4 - Saving State
 This might, as per your use case, be a requirement. Good part about MVX is that it allows to save the state without passing in bundles. That's because the PresenterModel we just saw, is actually an Android Service, and the Presenter an implementation of IBinder!
 We just need to put a few Presenter method calls at the right lifecycle methods of the Activity or Fragment to enable state saving, namely the following.
 ```java
 public class MainActivity extends AppCompatActivity implements MainView {
 ...
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.unbind(this);
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
